@@ -1,4 +1,7 @@
 custom-google-map
 =================
 
-Customized Google Maps module 
+![alt text](img/screenshot.png "Google Maps")
+
+
+

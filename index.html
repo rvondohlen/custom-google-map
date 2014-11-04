@@ -8,14 +8,14 @@
   <script src="js/infobox.js"></script>
   <style>
 
-    /*overall map styles*/
+    /* overall map styles */
 
     #map {
         width:  100%;
         height: 400px;
     }
 
-    /*infobox content styles*/
+    /* infobox content styles */
 
     #map hr {
         border: none;
@@ -24,7 +24,7 @@
         height: 1px;
     }
 
-    /*infobox fade in and up animation*/
+    /* infobox fade in and up animation */
 
     .infoBox {
         -webkit-animation: fadeIn 500ms; 
@@ -61,6 +61,8 @@
   <script type="text/javascript">
 
     // map styles
+    // created with:
+    // http://gmaps-samples-v3.googlecode.com/svn/trunk/styledmaps/wizard/index.html
 
     var styles = [{
         stylers: [              
@@ -84,14 +86,17 @@
     }];
 
     var map = new google.maps.Map(document.getElementById('map'), {
+      // set map center and zoom
       center: new google.maps.LatLng(9.077751,8.6774567),
       zoom: 6,
+      // toggle default map UI
+      disableDefaultUI: true,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
     map.set('styles', styles);
 
-
+    // infobox logic
     function initMarkers(map, markerData) {
         var newMarkers = [],
             marker;
@@ -99,26 +104,31 @@
         for(var i=0; i<markerData.length; i++) {
             marker = new google.maps.Marker({
                 map: map,
-                draggable: true,
+                draggable: false,
                 position: markerData[i].latLng,
+                // not sure what this does, but great name
                 visinfoboxle: true,
                 icon: 'img/marker.png'
             }),
             boxText = document.createElement("div"),
-            //these are the options for all infoboxes
+            // these are the options for all infoboxes
             infoboxOptions = {
-                 content: boxText,
+                content: boxText,
+                // auto pan to opened infobox
                 disableAutoPan: false,
                 maxWidth: 0,
+                // offest of textbox to marker
                 pixelOffset: new google.maps.Size(-140, 0),
                 zIndex: null,
                 boxStyle: {
+                    // can add arrow to box here if desired via transparent img
                     background: "",
                     opacity: 0.9,
                     width: "280px"
                 },
                 closeBoxMargin: "12px 4px 2px 4px",
                 closeBoxURL: "img/close.gif",
+                // sets how close to the edge of the map the infobox can be after openning
                 infoBoxClearance:   new google.maps.Size(20, 20),
                 visible: true,
                 pane: "floatPane",
@@ -126,30 +136,26 @@
             };
             
             newMarkers.push(marker);
-            //define the text and style for all infoboxes
+            // define the text and style for all infoboxes
             boxText.style.cssText = "border: 1px solid #dedede; margin-top: 8px; background:#fff; color:#222; font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial; font-size:12px; padding: 5px; border-radius:4px; -webkit-border-radius:4px; -moz-border-radius:4px;";
             boxText.innerHTML = '<h3>' + markerData[i].title + '</h3><hr><p>' + markerData[i].description + '</p>';
-            //Define the infobox
+            // define the infobox
             newMarkers[i].infobox = new InfoBox(infoboxOptions);
 
 
-            //Open first when page is loaded
+            // open first when page is loaded
             //newMarkers[0].infobox.open(map, this);
             //map.panTo(markerData[i].latLng);
 
-            //Open box on click and close all others
+            // open box on click and close all others
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function() {
                     for (var j=0;j<newMarkers.length;j++) {
                         newMarkers[j].infobox.close(map, this);
                     }
-                     var isOpen = newMarkers[i].infobox.getMap();
-
-                    if (isOpen == null){                           
-                        newMarkers[i].infobox.open(map, this);
-                    } else {
-                        newMarkers[i].infobox.close(map, this);
-                    } 
+                    
+                    newMarkers[i].infobox.open(map, this);
+                    
                     map.panTo(markerData[i].latLng);
                     map.panBy(0, 75);
                 }
@@ -159,6 +165,8 @@
         return newMarkers;
 
     }
+
+    // these are the markers
 
     markers = initMarkers(map, [
         { latLng: new google.maps.LatLng(6.134888, 6.766784), title: "Marker 1", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },

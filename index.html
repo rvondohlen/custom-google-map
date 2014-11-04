@@ -2,21 +2,29 @@
 <html> 
 <head> 
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
-  <title>Custom Interactive Google Map</title> 
+  <title>Custom Google Map</title> 
   <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
   <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.1.min.js"></script>
   <script src="js/infobox.js"></script>
   <style>
+
+    /*overall map styles*/
+
     #map {
         width:  100%;
         height: 400px;
     }
+
+    /*infobox content styles*/
+
     #map hr {
         border: none;
         background-color: #ccc;
         color: #ccc;
         height: 1px;
     }
+
+    /*infobox fade in and up animation*/
 
     .infoBox {
         -webkit-animation: fadeIn 500ms; 
@@ -51,6 +59,8 @@
   <div id="map"></div>
 
   <script type="text/javascript">
+
+    // map styles
 
     var styles = [{
         stylers: [              
@@ -98,9 +108,9 @@
             //these are the options for all infoboxes
             infoboxOptions = {
                  content: boxText,
-                disableAutoPan: true,
+                disableAutoPan: false,
                 maxWidth: 0,
-                pixelOffset: new google.maps.Size(-140, -160),
+                pixelOffset: new google.maps.Size(-140, 0),
                 zIndex: null,
                 boxStyle: {
                     background: "",
@@ -109,7 +119,7 @@
                 },
                 closeBoxMargin: "12px 4px 2px 4px",
                 closeBoxURL: "img/close.gif",
-                infoBoxClearance: new google.maps.Size(1, 1),
+                infoBoxClearance:   new google.maps.Size(20, 20),
                 visible: true,
                 pane: "floatPane",
                 enableEventPropagation: false
@@ -141,18 +151,9 @@
                         newMarkers[i].infobox.close(map, this);
                     } 
                     map.panTo(markerData[i].latLng);
+                    map.panBy(0, 75);
                 }
             })(marker, i));
-
-            // google.maps.event.addListener(marker, 'click', function() {
-            //     var isOpen = ib.getMap();
-            //     if (isOpen == null){                           
-            //         ib.open(map, this);
-            //     } else {
-            //         ib.close(map, this);
-            //     }   
-            // });
-                    
         }
         
         return newMarkers;
@@ -160,7 +161,7 @@
     }
 
     markers = initMarkers(map, [
-        { latLng: new google.maps.LatLng(11.918478, 5.908902), title: "Marker 1", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },
+        { latLng: new google.maps.LatLng(6.134888, 6.766784), title: "Marker 1", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },
         { latLng: new google.maps.LatLng(8.407168, 3.89843), title: "Marker 2", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },
         { latLng: new google.maps.LatLng(9.719886, 11.402092), title: "Marker 3", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },
         { latLng: new google.maps.LatLng(9.568251, 6.974602), title: "Marker 4", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },

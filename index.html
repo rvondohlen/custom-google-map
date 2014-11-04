@@ -24,13 +24,25 @@
     }
 
     @-webkit-keyframes fadeIn {
-        from {opacity: 0;}
-        to {opacity: 0.9;}
+        from {
+            opacity: 0;
+            margin-top: 20px;
+        }
+        to {
+            opacity: 0.9;
+            margin-top: 0;
+        }
     }
 
     @keyframes fadeIn {
-        from {opacity: 0;}
-        to {opacity: 0.9;}
+        from {
+            opacity: 0;
+            margin-top: 20px;
+        }
+        to {
+            opacity: 0.9;
+            margin-top: 0;
+        }
     }
 
   </style>
@@ -96,7 +108,7 @@
                     width: "280px"
                 },
                 closeBoxMargin: "12px 4px 2px 4px",
-                closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
+                closeBoxURL: "img/close.gif",
                 infoBoxClearance: new google.maps.Size(1, 1),
                 visible: true,
                 pane: "floatPane",
@@ -112,19 +124,34 @@
 
 
             //Open first when page is loaded
-            newMarkers[0].infobox.open(map, marker);
-            map.panTo(markerData[i].latLng);
+            //newMarkers[0].infobox.open(map, this);
+            //map.panTo(markerData[i].latLng);
 
             //Open box on click and close all others
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function() {
                     for (var j=0;j<newMarkers.length;j++) {
-                         newMarkers[j].infobox.close(map, this);
-                      }
-                    newMarkers[i].infobox.open(map, this);
+                        newMarkers[j].infobox.close(map, this);
+                    }
+                     var isOpen = newMarkers[i].infobox.getMap();
+
+                    if (isOpen == null){                           
+                        newMarkers[i].infobox.open(map, this);
+                    } else {
+                        newMarkers[i].infobox.close(map, this);
+                    } 
                     map.panTo(markerData[i].latLng);
                 }
             })(marker, i));
+
+            // google.maps.event.addListener(marker, 'click', function() {
+            //     var isOpen = ib.getMap();
+            //     if (isOpen == null){                           
+            //         ib.open(map, this);
+            //     } else {
+            //         ib.close(map, this);
+            //     }   
+            // });
                     
         }
         

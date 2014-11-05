@@ -24,6 +24,45 @@
         height: 1px;
     }
 
+    /* styles for infobox top bar */
+
+    h3:before,
+    h3.power:before,
+    h3.transport:before {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        margin: -20px 0 5px -6px;
+        width: 254px;
+        height:18px;
+        display: block;
+        padding: 4px 5px 0 21px;
+        color: #fff;
+        font-size: 9px;
+        font-weight: 300;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        background-repeat: no-repeat;
+        background-size: 10px;
+        background-position: 7px 5px;
+        content:'';
+        background-color: #939598;
+
+    } 
+
+    /* top bar categorical label */
+
+    h3.power:before {
+        content:'Power';
+        background-color: #DA7E49;
+        background-image: url('img/power.png');
+    }
+
+    h3.transport:before {
+        content:'Transportation';
+        background-color: #498595;
+        background-image: url('img/transport.png');
+    }
+
     /* infobox fade in and up animation */
 
     .infoBox {
@@ -66,7 +105,7 @@
 
     var styles = [{
         stylers: [              
-            //{hue: "#b6efbf" },
+            //{hue: "#007e40" },
             { saturation: -7 },
             { lightness: 35 }
         ]
@@ -127,18 +166,31 @@
                     width: "280px"
                 },
                 closeBoxMargin: "12px 4px 2px 4px",
-                closeBoxURL: "img/close.gif",
+                closeBoxURL: "img/close.png",
                 // sets how close to the edge of the map the infobox can be after openning
-                infoBoxClearance:   new google.maps.Size(20, 20),
+                infoBoxClearance: new google.maps.Size(20, 20),
                 visible: true,
                 pane: "floatPane",
                 enableEventPropagation: false
             };
             
             newMarkers.push(marker);
+
+
+            
+
             // define the text and style for all infoboxes
             boxText.style.cssText = "border: 1px solid #dedede; margin-top: 8px; background:#fff; color:#222; font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial; font-size:12px; padding: 5px; border-radius:4px; -webkit-border-radius:4px; -moz-border-radius:4px;";
-            boxText.innerHTML = '<h3>' + markerData[i].title + '</h3><hr><p>' + markerData[i].description + '</p>';
+            
+            //setting up infobox categorical styling
+            if (markerData[i].type === 'Power'){
+                boxText.innerHTML = '<h3 class="power">' + markerData[i].title + '</h3><hr><p>' + markerData[i].description + '</p>';
+            }else if(markerData[i].type === 'Transportation'){
+                boxText.innerHTML = '<h3 class="transport">' + markerData[i].title + '</h3><hr><p>' + markerData[i].description + '</p>';
+            }else{
+                boxText.innerHTML = '<h3>' + markerData[i].title + '</h3><hr><p>' + markerData[i].description + '</p>';
+            }
+
             // define the infobox
             newMarkers[i].infobox = new InfoBox(infoboxOptions);
 
@@ -169,11 +221,11 @@
     // these are the markers
 
     markers = initMarkers(map, [
-        { latLng: new google.maps.LatLng(6.134888, 6.766784), title: "Marker 1", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },
-        { latLng: new google.maps.LatLng(8.407168, 3.89843), title: "Marker 2", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },
-        { latLng: new google.maps.LatLng(9.719886, 11.402092), title: "Marker 3", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },
-        { latLng: new google.maps.LatLng(9.568251, 6.974602), title: "Marker 4", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },
-        { latLng: new google.maps.LatLng(7.656553, 8.897209), title: "Marker 5", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." }
+        { latLng: new google.maps.LatLng(6.134888, 6.766784), title: "Marker 1", type: "Power", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },
+        { latLng: new google.maps.LatLng(8.407168, 3.89843), title: "Marker 2", type: "Transportation",  description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },
+        { latLng: new google.maps.LatLng(9.719886, 11.402092), title: "Marker 3", type: "Power", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },
+        { latLng: new google.maps.LatLng(9.568251, 6.974602), title: "Marker Long Title", type: "Transportation", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },
+        { latLng: new google.maps.LatLng(7.656553, 8.897209), title: "Marker No Type", type: "", description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." }
     ]);
   
   </script> 
